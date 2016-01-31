@@ -6,6 +6,10 @@
  */
 //#include "includes.h"
 
+
+/**
+ * Se encarga de las visualizaciones.
+ */
 struct Menu{
 	/**
 	 * Muestra el menú principal
@@ -24,9 +28,6 @@ struct Menu{
 	}
 
 
-	/*
-	 *
-	*/
 	int MenuEdicion(){
 		system("CLS");
 		int opcion;
@@ -136,7 +137,6 @@ struct Menu{
 					<< setw (5) << vis.id
 					<< setw (33) << vis.nombre
 					<< endl;
-
 			}
 
 		}

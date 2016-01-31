@@ -8,13 +8,19 @@ List<Fecha> getFechas();
 Menu menu;
 List<Fecha> fechas;
 
+
+/**
+ * Método de entrada a la aplicación
+ */
 int main(int argc, char** argv) {
 	fechas = getFechas();
 	MenuPrincipal();
 	return 0;
 }
 
-
+/**
+ * Maneja las distintas respuestas del menú principal
+ */
 void MenuPrincipal(){
 	bool salir = false;
 	int opcion = menu.MenuPrincipal();
@@ -41,6 +47,9 @@ void MenuPrincipal(){
 
 }
 
+/**
+ * Maneja las distintas respuestas del menú de edición
+ */
 void MenuEdicion(){
 	int opcion = menu.MenuEdicion();
 	bool volver = false;
@@ -67,11 +76,12 @@ void MenuEdicion(){
 	}
 }
 
+/**
+ * Maneja las distintas respuestas del menú de simulación
+ */
 void MenuSimulacion(bool simular){
 	int opcion = menu.MenuSimulacion();
 	bool volver = false;
-
-
 
 	switch (opcion) {
 		case 1:
@@ -95,7 +105,9 @@ void MenuSimulacion(bool simular){
 	}
 }
 
-
+/**
+ * Simula el torneo.
+ */
 List<Fecha> getFechas(){
 	Equipo equipos[100] = {};
 	FileIterator<Equipo> it = fileManager.getIterator();

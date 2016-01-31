@@ -12,6 +12,10 @@
 using namespace std;
 char NOMBRE_ARCHIVO [20] = "EquiposDeFutbol.bin";
 
+
+/**
+ * Iterador de archivo genérico
+ */
 template<typename T> struct FileIterator{
 	FILE *file;
 	T t;
@@ -43,6 +47,10 @@ template<typename T> struct FileIterator{
 
 };
 
+
+/**
+ * Contiene varios métodos para manejar un archivo de Equipos
+ */
 struct FileManager{
 
 	FILE * file;
@@ -121,7 +129,10 @@ struct FileManager{
 
 };
 
-
+/**
+ * Lista doblemente enlazada con lógica propia necesaria para la
+ * administración de los puntajes.
+ */
 struct ListaPuntaje{
 	Node<Puntaje> *inicio = NULL;
 	Node<Puntaje> *fin;
@@ -157,6 +168,10 @@ struct ListaPuntaje{
 		return it;
 	}
 
+	/**
+	 * Cuando se ingresa un Equipo que ya se encuentra en la lista
+	 * se suman los valores
+	 */
 	void merge(Puntaje &actual, Puntaje nuevo){
 		actual.jugados 		 += nuevo.jugados;
 		actual.ganados 		 += nuevo.ganados;
@@ -168,6 +183,10 @@ struct ListaPuntaje{
 		actual.puntos 		 += nuevo.puntos;
 	}
 
+	/**
+	 * De acuerdo al puntaje, a la diferencia de goles y a los goles a favor,
+	 * decide si tiene que mover un Equipo más arriba en la lista.
+	 */
 	void reorder(Node<Puntaje> *puntaje){
 		if(puntaje->ant){
 			Puntaje actual = puntaje->data;

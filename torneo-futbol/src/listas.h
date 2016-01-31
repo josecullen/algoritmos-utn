@@ -1,6 +1,6 @@
 /*
  * lista.h
- *
+ *  Se definen las estructuras que manejan listas
  *  Created on: 29 de ene. de 2016
  *      Author: jcullen
  */
@@ -8,12 +8,18 @@
 #ifndef LISTAS_H_
 #define LISTAS_H_
 
+/**
+ * Nodo genérico
+ */
 template<typename T> struct Node{
 	T data;
 	Node *sig;
 	Node *ant;
 };
 
+/**
+ * Iterador genérico
+ */
 template<typename T> struct ListIterator{
 	Node<T> *inicio, *fin, *actualNode;
 	bool has;
@@ -42,7 +48,9 @@ template<typename T> struct ListIterator{
 
 };
 
-
+/**
+ * Lista genérica
+ */
 template<typename T> struct List{
 	int lenght = 0;
 	Node<T> *inicio = NULL;
