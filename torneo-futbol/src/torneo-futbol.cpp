@@ -13,7 +13,6 @@ List<Fecha> fechas;
  * Método de entrada a la aplicación
  */
 int main(int argc, char** argv) {
-	fechas = getFechas();
 	MenuPrincipal();
 	return 0;
 }
@@ -82,6 +81,10 @@ void MenuEdicion(){
 void MenuSimulacion(bool simular){
 	int opcion = menu.MenuSimulacion();
 	bool volver = false;
+
+	if(simular){
+		fechas = getFechas();
+	}
 
 	switch (opcion) {
 		case 1:
