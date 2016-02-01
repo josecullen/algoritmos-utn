@@ -10,7 +10,7 @@
 
 
 using namespace std;
-char NOMBRE_ARCHIVO [20] = "EquiposDeFutbol.bin";
+const char NOMBRE_ARCHIVO [20] = "EquiposDeFutbol.bin";
 
 
 /**
