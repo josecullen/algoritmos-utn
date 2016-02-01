@@ -1,35 +1,38 @@
 #include "includes.h"
 #include "menu.h"
 
-void MenuPrincipal();
-void MenuEdicion();
-void MenuSimulacion(bool simular);
+void MenuPrincipal(Menu menu);
+void MenuEdicion(Menu menu);
+void MenuSimulacion(Menu menu, List<Fecha> fechas, bool simular);
 List<Fecha> getFechas();
-Menu menu;
-List<Fecha> fechas;
+
 
 
 /**
  * Método de entrada a la aplicación
  */
 int main(int argc, char** argv) {
-	MenuPrincipal();
+	Menu menu;
+	MenuPrincipal(menu);
 	return 0;
 }
 
 /**
  * Maneja las distintas respuestas del menú principal
  */
-void MenuPrincipal(){
+void MenuPrincipal(Menu menu){
 	bool salir = false;
 	int opcion = menu.MenuPrincipal();
 
 	switch (opcion) {
 		case 1:
-			MenuEdicion();
+			MenuEdicion(menu);
 			break;
 		case 2:
-			MenuSimulacion(true);
+			{
+				List<Fecha> fechas;
+				MenuSimulacion(menu, fechas, true);
+			}
 			break;
 		case 0:
 			salir = true;
@@ -39,7 +42,7 @@ void MenuPrincipal(){
 	}
 
 	if(!salir){
-		MenuPrincipal();
+		MenuPrincipal(menu);
 	}else{
 		menu.Salir();
 	}
@@ -49,7 +52,7 @@ void MenuPrincipal(){
 /**
  * Maneja las distintas respuestas del menú de edición
  */
-void MenuEdicion(){
+void MenuEdicion(Menu menu){
 	int opcion = menu.MenuEdicion();
 	bool volver = false;
 
@@ -71,14 +74,14 @@ void MenuEdicion(){
 	}
 
 	if(!volver){
-		MenuEdicion();
+		MenuEdicion(menu);
 	}
 }
 
 /**
  * Maneja las distintas respuestas del menú de simulación
  */
-void MenuSimulacion(bool simular){
+void MenuSimulacion(Menu menu, List<Fecha> fechas, bool simular){
 	int opcion = menu.MenuSimulacion();
 	bool volver = false;
 
@@ -104,7 +107,7 @@ void MenuSimulacion(bool simular){
 	}
 
 	if(!volver){
-		MenuSimulacion(false);
+		MenuSimulacion(menu, fechas, false);
 	}
 }
 
