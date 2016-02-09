@@ -7,7 +7,6 @@ void MenuSimulacion(Menu menu, List<Fecha> fechas, bool simular);
 List<Fecha> getFechas();
 
 
-
 /**
  * Método de entrada a la aplicación
  */
@@ -21,69 +20,59 @@ int main(int argc, char** argv) {
  * Maneja las distintas respuestas del menú principal
  */
 void MenuPrincipal(Menu menu){
-	bool salir = false;
 	int opcion = menu.MenuPrincipal();
 
 	switch (opcion) {
 		case 1:
 			MenuEdicion(menu);
+			MenuPrincipal(menu);
 			break;
 		case 2:
 			{
 				List<Fecha> fechas;
 				MenuSimulacion(menu, fechas, true);
+				MenuPrincipal(menu);
+				fechas.deleteAll();
 			}
 			break;
 		case 0:
-			salir = true;
-			break;
-		default:
 			break;
 	}
-
-	if(!salir){
-		MenuPrincipal(menu);
-	}else{
-		menu.Salir();
-	}
-
 }
+
 
 /**
  * Maneja las distintas respuestas del menú de edición
  */
 void MenuEdicion(Menu menu){
 	int opcion = menu.MenuEdicion();
-	bool volver = false;
 
 	switch (opcion) {
 		case 1:
 			fileManager.put(menu.CrearEquipo());
+			MenuEdicion(menu);
 			break;
 		case 2:
 			menu.EliminarEquipo();
+			MenuEdicion(menu);
 			break;
 		case 3:
 			menu.ListarEquipos();
+			MenuEdicion(menu);
 			break;
 		case 0:
-			volver = true;
 			break;
 		default:
 			break;
 	}
-
-	if(!volver){
-		MenuEdicion(menu);
-	}
 }
+
 
 /**
  * Maneja las distintas respuestas del menú de simulación
  */
 void MenuSimulacion(Menu menu, List<Fecha> fechas, bool simular){
 	int opcion = menu.MenuSimulacion();
-	bool volver = false;
 
 	if(simular){
 		fechas = getFechas();
@@ -92,40 +81,60 @@ void MenuSimulacion(Menu menu, List<Fecha> fechas, bool simular){
 	switch (opcion) {
 		case 1:
 			menu.TablaDePosiciones(fechas);
+			MenuSimulacion(menu, fechas, false);
 			break;
 		case 2:
 			menu.PartidosPorEquipo(fechas);
+			MenuSimulacion(menu, fechas, false);
 			break;
 		case 3:
 			menu.PartidosPorFecha(fechas);
+			MenuSimulacion(menu, fechas, false);
 			break;
 		case 0:
-			volver = true;
 			break;
 		default:
 			break;
 	}
 
-	if(!volver){
-		MenuSimulacion(menu, fechas, false);
-	}
 }
 
 /**
  * Simula el torneo.
  */
 List<Fecha> getFechas(){
-	Equipo equipos[100] = {};
+	Equipo equiposAux[100] = {};
 	FileIterator<Equipo> it = fileManager.getIterator();
 
 	int count = 0;
 	while(it.hasNext()){
-		equipos[count++] = it.next();
+		equiposAux[count++] = it.next();
 	}
 
+	Equipo equipos[count] = {};
+	int randomValues[count] = {};
+	for(int i = 0; i < count; ){
+		int value = rand() % count;
+		bool newValue = true;
+		for(int randoms = 0; randoms < i; randoms++){
+			if(randomValues[randoms] == value){
+				newValue = false;
+				break;
+			}
+		}
+		if(newValue){
+			equipos[i] = equiposAux[value];
+			randomValues[i] = value;
+			i++;
+		}
+	}
+
+	int totalFechas;
+	count % 2 == 0 ? totalFechas = count-1 : totalFechas = count;
+	cout<<"total fechas "<<totalFechas;
 	List<Fecha> fechas;
 	int l, v;
-	for(int numFecha = 0; numFecha < count-1; numFecha++){
+	for(int numFecha = 0; numFecha < totalFechas; numFecha++){
 		Fecha fecha;
 
 		for(int numPartido = 1; numPartido <= count/2; numPartido++){

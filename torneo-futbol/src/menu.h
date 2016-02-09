@@ -109,10 +109,10 @@ struct Menu{
 	void EliminarEquipo(){
 		char id[4];
 
-		do{
-			cout<<"Ingrese el ID del equipo que desea eliminar: ";
-			cin>>id;
-		}while(!fileManager.removeById(id));
+		cout<<"Ingrese el ID del equipo que desea eliminar: ";
+		cin>>id;
+		fileManager.removeById(id);
+
 		wait();
 	}
 
@@ -198,7 +198,7 @@ struct Menu{
 
 		int count = 1;
 		while(fechasIt.hasNext() && count++ <= numFecha){
-
+			cout<<"count "<<count<<"   numFecha "<<numFecha<<endl;
 			Fecha fecha = fechasIt.next();
 			ListIterator<Partido> partidos = fecha.partidos.getIterator();
 			while(partidos.hasNext()){
@@ -229,6 +229,11 @@ struct Menu{
 		while(puntajesIt.hasNext()){
 			ImprimirPuntaje(puntajesIt.next());
 		}
+
+		puntajesIt.deleteAll();
+		listaPuntaje.deleteAll();
+//		fechasIt.deleteAll();
+
 		wait();
 	}
 

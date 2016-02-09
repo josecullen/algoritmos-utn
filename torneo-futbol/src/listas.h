@@ -13,15 +13,15 @@
  */
 template<typename T> struct Node{
 	T data;
-	Node *sig;
-	Node *ant;
+	Node *sig = NULL;
+	Node *ant = NULL;
 };
 
 /**
  * Iterador genérico
  */
 template<typename T> struct ListIterator{
-	Node<T> *inicio, *fin, *actualNode;
+	Node<T> *inicio, *fin, *currentNode;
 	bool has;
 
 	void set(Node<T> *inicio, Node<T> *fin){
@@ -40,11 +40,18 @@ template<typename T> struct ListIterator{
 	}
 
 	T next(){
-		actualNode = inicio;
+		currentNode = inicio;
 		T data = inicio->data;
 		inicio = inicio->sig;
 		return data;
 	}
+
+	void deleteAll(){
+		delete(this->currentNode);
+		delete(this->fin);
+		delete(this->inicio);
+	}
+
 
 };
 
@@ -52,12 +59,12 @@ template<typename T> struct ListIterator{
  * Lista genérica
  */
 template<typename T> struct List{
-	int lenght = 0;
+	int length = 0;
 	Node<T> *inicio = NULL;
 	Node<T> *fin;
 
 	void put(T t){
-		lenght++;
+		length++;
 		Node<T> *node = new Node<T>();
 		node->data = t;
 
@@ -76,6 +83,11 @@ template<typename T> struct List{
 		ListIterator<T> it;
 		it.set(inicio, fin);
 		return it;
+	}
+
+	void deleteAll(){
+		delete(inicio);
+		delete(fin);
 	}
 
 };

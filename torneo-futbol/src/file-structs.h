@@ -18,23 +18,16 @@ const char NOMBRE_ARCHIVO [20] = "EquiposDeFutbol.bin";
  */
 template<typename T> struct FileIterator{
 	FILE *file;
-	T t;
+	T siguiente;
+	bool haySiguiente;
 
 	void setFile(FILE *file){
 		this->file = fopen(NOMBRE_ARCHIVO, "ab+");
-		fseek(this->file, 0L, SEEK_SET);
+		intentarLeerSiguiente();
 	}
 
 	bool hasNext(){
-		fread(&t, sizeof(T), 1, file);
-
-		int hasMore = !feof(this->file);
-
-		if(hasMore == 0){
-			this->close();
-		}
-
-		return hasMore != 0;
+		return haySiguiente;
 	}
 
 	bool close(){
@@ -42,7 +35,17 @@ template<typename T> struct FileIterator{
 	}
 
 	T next(){
-		return t;
+		T anterior = siguiente;
+		intentarLeerSiguiente();
+		return anterior;
+	}
+
+	void intentarLeerSiguiente() {
+		fread(&siguiente, sizeof(T), 1, file);
+		haySiguiente = !feof(file);
+		if(!haySiguiente){
+			fclose(file);
+		}
 	}
 
 };
@@ -74,16 +77,16 @@ struct FileManager{
 	bool removeById(char id[4]){
 		bool removed = false;
 
-		this->file = fopen(NOMBRE_ARCHIVO,"rb");
+		FileIterator<Equipo> it = getIterator();
+
 		FILE *tmp = fopen("tmp.bin", "ab+");
 
 		Equipo equipo;
 
-		fread(&equipo,sizeof(Equipo),1,file);
+		while (it.hasNext()) {
+			equipo = it.next();
 
-		while (!feof(file)) {
 			if (strcmp (equipo.id, id) == 0) {
-				printf("A record with requested name found and deleted.\n\n");
 				removed = true;
 			} else {
 				fwrite(&equipo, sizeof(Equipo), 1, tmp);
@@ -91,10 +94,7 @@ struct FileManager{
 			fread(&equipo,sizeof(Equipo),1,file);
 		}
 
-		fclose(file);
 		fclose(tmp);
-
-		cout<<"rename files. . .";
 		remove(NOMBRE_ARCHIVO);
 
 		int result = rename("tmp.bin", NOMBRE_ARCHIVO);
@@ -149,8 +149,8 @@ struct ListaPuntaje{
 			while(it.hasNext()){
 				p = it.next();
 				if(strcmp(p.equipo.id, puntaje.equipo.id) == 0){
-					merge(it.actualNode->data,puntaje);
-					this->reorder(it.actualNode);
+					merge(it.currentNode->data,puntaje);
+					this->reorder(it.currentNode);
 					return;
 				}
 			}
@@ -226,6 +226,11 @@ struct ListaPuntaje{
 				}
 			}
 		}
+
+	void deleteAll(){
+		delete(inicio);
+		delete(fin);
+	}
 
 };
 

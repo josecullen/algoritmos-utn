@@ -42,55 +42,30 @@ struct Puntaje{
 		difDeGoles;
 
 	void set(Partido partido, bool local){
-		if(local){
-			this->equipo = partido.local;
-			this->jugados = 1;
-			this->golesAFavor = partido.golesLocal;
-			this->golesEnContra = partido.golesVisitante;
-			this->difDeGoles = partido.golesLocal - partido.golesVisitante;
+		this->equipo = local ? partido.local : partido.visitante;
+		this->golesAFavor = local ? partido.golesLocal : partido.golesVisitante;
+		this->golesEnContra = local ? partido.golesVisitante : partido.golesLocal;
+		this->difDeGoles = local ?
+				partido.golesLocal - partido.golesVisitante :
+				partido.golesVisitante - partido.golesLocal;
 
-			if(partido.golesLocal > partido.golesVisitante){
-				this->ganados = 1;
-				this->empatados = 0;
-				this->perdidos = 0;
-				this->puntos = 3;
-			}else if(partido.golesLocal < partido.golesVisitante){
-				this->ganados = 0;
-				this->empatados = 0;
-				this->perdidos = 1;
-				this->puntos = 0;
-			}else{
-				this->ganados = 0;
-				this->empatados = 1;
-				this->perdidos = 0;
-				this->puntos = 1;
-			}
-		}else{
-			this->equipo = partido.visitante;
-			this->jugados = 1;
-			this->golesAFavor = partido.golesVisitante;
-			this->golesEnContra = partido.golesLocal;
-			this->difDeGoles = partido.golesVisitante - partido.golesLocal;
+		this->jugados = 1;
+		this->ganados = 0;
+		this->empatados = 0;
+		this->perdidos = 0;
+		this->puntos = 0;
 
-			if(partido.golesVisitante > partido.golesLocal){
-				this->ganados = 1;
-				this->empatados = 0;
-				this->perdidos = 0;
-				this->puntos = 3;
-			}else if(partido.golesVisitante < partido.golesLocal){
-				this->ganados = 0;
-				this->empatados = 0;
-				this->perdidos = 1;
-				this->puntos = 0;
-			}else{
-				this->ganados = 0;
-				this->empatados = 1;
-				this->perdidos = 0;
-				this->puntos = 1;
-			}
-
+		if (this->golesAFavor > this->golesEnContra) {
+		    this->ganados = 1;
+		    this->puntos = 3;
+		}else if (this->golesAFavor < this->golesEnContra) {
+		    this->perdidos = 1;
+		}else {
+		    this->empatados = 1;
+		    this->puntos = 1;
 		}
 	}
+
 };
 
 
