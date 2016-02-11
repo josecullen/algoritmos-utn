@@ -153,6 +153,7 @@ struct Menu{
 		while(fechasIt.hasNext()){
 			ListIterator<Partido> it = fechasIt.next().partidos.getIterator();
 			while(it.hasNext()){
+
 				Partido p = it.next();
 				if(	strcmp(p.local.id, idEquipo) == 0 ||
 					strcmp(p.visitante.id, idEquipo) == 0){
@@ -198,7 +199,6 @@ struct Menu{
 
 		int count = 1;
 		while(fechasIt.hasNext() && count++ <= numFecha){
-			cout<<"count "<<count<<"   numFecha "<<numFecha<<endl;
 			Fecha fecha = fechasIt.next();
 			ListIterator<Partido> partidos = fecha.partidos.getIterator();
 			while(partidos.hasNext()){

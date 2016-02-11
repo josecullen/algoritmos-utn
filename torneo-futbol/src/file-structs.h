@@ -138,9 +138,9 @@ struct ListaPuntaje{
 	Node<Puntaje> *fin;
 
 	void put(Puntaje puntaje){
-		Node<Puntaje> *node = new Node<Puntaje>();
-		node->data = puntaje;
 		if(!inicio){
+			Node<Puntaje> *node = new Node<Puntaje>();
+			node->data = puntaje;
 			inicio = node;
 			fin = inicio;
 		}else{
@@ -154,6 +154,8 @@ struct ListaPuntaje{
 					return;
 				}
 			}
+			Node<Puntaje> *node = new Node<Puntaje>();
+			node->data = puntaje;
 			Node<Puntaje> *ant = fin;
 			fin->sig = node;
 			fin = node;
@@ -228,6 +230,12 @@ struct ListaPuntaje{
 		}
 
 	void deleteAll(){
+		Node<Puntaje> *aux;
+		while(inicio){
+			aux = inicio;
+			inicio = inicio->sig;
+			free(aux);
+		}
 		delete(inicio);
 		delete(fin);
 	}
