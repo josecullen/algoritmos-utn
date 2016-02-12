@@ -118,14 +118,6 @@ struct FileManager{
 		return -1;
 	}
 
-	List<Equipo> getList(){
-		FileIterator<Equipo> it = getIterator();
-		List<Equipo> list;
-		while(it.hasNext()){
-			list.put(it.next());
-		}
-		return list;
-	}
 
 };
 
@@ -236,8 +228,6 @@ struct ListaPuntaje{
 			inicio = inicio->sig;
 			free(aux);
 		}
-		delete(inicio);
-		delete(fin);
 	}
 
 };

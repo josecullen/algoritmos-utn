@@ -23,14 +23,12 @@ template<typename T> struct Node{
 template<typename T> struct ListIterator{
 	Node<T>
 		*inicio,
-		*fin,
 		*currentNode,
 		*siguiente;
 	bool haySiguiente;
 
 	void set(Node<T> *inicio, Node<T> *fin){
 		this->inicio = inicio;
-		this->fin = fin;
 		intentarLeerSiguiente();
 	}
 
@@ -52,8 +50,6 @@ template<typename T> struct ListIterator{
 			free(aux);
 		}
 		delete(this->currentNode);
-		delete(this->fin);
-		delete(this->inicio);
 	}
 
 	void intentarLeerSiguiente() {
@@ -102,8 +98,6 @@ template<typename T> struct List{
 			inicio = inicio->sig;
 			free(aux);
 		}
-		delete(inicio);
-		delete(fin);
 	}
 
 };

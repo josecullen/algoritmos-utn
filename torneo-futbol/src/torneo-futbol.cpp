@@ -3,7 +3,7 @@
 
 void MenuPrincipal(Menu menu);
 void MenuEdicion(Menu menu);
-void MenuSimulacion(Menu menu, List<Fecha> fechas, bool simular);
+void MenuSimulacion(Menu menu, List<Fecha> fechas);
 List<Fecha> getFechas();
 
 
@@ -30,7 +30,7 @@ void MenuPrincipal(Menu menu){
 			case 2:
 				{
 					List<Fecha> fechas;
-					MenuSimulacion(menu, fechas, true);
+					MenuSimulacion(menu, fechas);
 					fechas.deleteAll();
 				}
 				break;
@@ -70,11 +70,10 @@ void MenuEdicion(Menu menu){
 /**
  * Maneja las distintas respuestas del menú de simulación
  */
-void MenuSimulacion(Menu menu, List<Fecha> fechas, bool simular){
+void MenuSimulacion(Menu menu, List<Fecha> fechas){
 
-	if(simular){
-		fechas = getFechas();
-	}
+	fechas = getFechas();
+
 	int opcion;
 	do{
 		opcion = menu.MenuSimulacion();
