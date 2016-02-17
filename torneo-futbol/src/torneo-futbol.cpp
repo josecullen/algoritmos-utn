@@ -88,6 +88,12 @@ void MenuSimulacion(Menu menu, List<Fecha> fechas){
 				menu.PartidosPorFecha(fechas);
 				break;
 			case 0:
+				ListIterator<Fecha> it = fechas.getIterator();
+				while(it.hasNext()){
+					Fecha fecha = it.next();
+					fecha.partidos.deleteAll();
+				}
+				fechas.deleteAll();
 				break;
 		}
 
