@@ -3,7 +3,7 @@
 
 void MenuPrincipal(Menu menu);
 void MenuEdicion(Menu menu);
-void MenuSimulacion(Menu menu, List<Fecha> fechas, bool simular);
+void MenuSimulacion(Menu menu, List<Fecha> fechas);
 List<Fecha> getFechas();
 
 
@@ -20,24 +20,25 @@ int main(int argc, char** argv) {
  * Maneja las distintas respuestas del menú principal
  */
 void MenuPrincipal(Menu menu){
-	int opcion = menu.MenuPrincipal();
+	int opcion = 0;
+	do {
+		opcion = menu.MenuPrincipal();
+		switch (opcion) {
+			case 1:
+				MenuEdicion(menu);
+				break;
+			case 2:
+				{
+					List<Fecha> fechas;
+					MenuSimulacion(menu, fechas);
+					fechas.deleteAll();
+				}
+				break;
+			case 0:
+				break;
+		}
+	} while(opcion != 0);
 
-	switch (opcion) {
-		case 1:
-			MenuEdicion(menu);
-			MenuPrincipal(menu);
-			break;
-		case 2:
-			{
-				List<Fecha> fechas;
-				MenuSimulacion(menu, fechas, true);
-				MenuPrincipal(menu);
-				fechas.deleteAll();
-			}
-			break;
-		case 0:
-			break;
-	}
 }
 
 
@@ -45,57 +46,58 @@ void MenuPrincipal(Menu menu){
  * Maneja las distintas respuestas del menú de edición
  */
 void MenuEdicion(Menu menu){
-	int opcion = menu.MenuEdicion();
+	int opcion;
+	do{
+		opcion = menu.MenuEdicion();
+		switch (opcion) {
+			case 1:
+				fileManager.put(menu.CrearEquipo());
+				break;
+			case 2:
+				menu.EliminarEquipo();
+				break;
+			case 3:
+				menu.ListarEquipos();
+				break;
+			case 0:
+				break;
+		}
+	}while(opcion != 0);
 
-	switch (opcion) {
-		case 1:
-			fileManager.put(menu.CrearEquipo());
-			MenuEdicion(menu);
-			break;
-		case 2:
-			menu.EliminarEquipo();
-			MenuEdicion(menu);
-			break;
-		case 3:
-			menu.ListarEquipos();
-			MenuEdicion(menu);
-			break;
-		case 0:
-			break;
-		default:
-			break;
-	}
 }
 
 
 /**
  * Maneja las distintas respuestas del menú de simulación
  */
-void MenuSimulacion(Menu menu, List<Fecha> fechas, bool simular){
-	int opcion = menu.MenuSimulacion();
+void MenuSimulacion(Menu menu, List<Fecha> fechas){
 
-	if(simular){
-		fechas = getFechas();
-	}
+	fechas = getFechas();
 
-	switch (opcion) {
-		case 1:
-			menu.TablaDePosiciones(fechas);
-			MenuSimulacion(menu, fechas, false);
-			break;
-		case 2:
-			menu.PartidosPorEquipo(fechas);
-			MenuSimulacion(menu, fechas, false);
-			break;
-		case 3:
-			menu.PartidosPorFecha(fechas);
-			MenuSimulacion(menu, fechas, false);
-			break;
-		case 0:
-			break;
-		default:
-			break;
-	}
+	int opcion;
+	do{
+		opcion = menu.MenuSimulacion();
+		switch (opcion) {
+			case 1:
+				menu.TablaDePosiciones(fechas);
+				break;
+			case 2:
+				menu.PartidosPorEquipo(fechas);
+				break;
+			case 3:
+				menu.PartidosPorFecha(fechas);
+				break;
+			case 0:
+				ListIterator<Fecha> it = fechas.getIterator();
+				while(it.hasNext()){
+					Fecha fecha = it.next();
+					fecha.partidos.deleteAll();
+				}
+				fechas.deleteAll();
+				break;
+		}
+
+	}while(opcion != 0);
 
 }
 
@@ -130,7 +132,8 @@ List<Fecha> getFechas(){
 	}
 
 	int totalFechas;
-	count % 2 == 0 ? totalFechas = count-1 : totalFechas = count;
+	totalFechas = (count % 2 == 0) ? count - 1 : count;
+
 	cout<<"total fechas "<<totalFechas;
 	List<Fecha> fechas;
 	int l, v;

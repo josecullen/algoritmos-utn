@@ -21,38 +21,44 @@ template<typename T> struct Node{
  * Iterador genérico
  */
 template<typename T> struct ListIterator{
-	Node<T> *inicio, *fin, *currentNode;
-	bool has;
+	Node<T>
+		*inicio,
+		*currentNode,
+		*siguiente;
+	bool haySiguiente;
 
 	void set(Node<T> *inicio, Node<T> *fin){
 		this->inicio = inicio;
-		this->fin = fin;
-		has = inicio;
+		intentarLeerSiguiente();
 	}
 
 	bool hasNext(){
-		if(has){
-			has = inicio != fin;
-			return true;
-		}else{
-			return false;
-		}
+		return haySiguiente;
 	}
 
 	T next(){
-		currentNode = inicio;
-		T data = inicio->data;
-		inicio = inicio->sig;
-		return data;
+		currentNode = siguiente;
+		intentarLeerSiguiente();
+		return currentNode->data;
 	}
 
 	void deleteAll(){
+		Node<T> *aux;
+		while(inicio){
+			aux = inicio;
+			inicio = inicio->sig;
+			free(aux);
+		}
 		delete(this->currentNode);
-		delete(this->fin);
-		delete(this->inicio);
 	}
 
-
+	void intentarLeerSiguiente() {
+		siguiente = inicio;
+		haySiguiente = siguiente != NULL;
+		if(haySiguiente){
+			inicio = inicio->sig;
+		}
+	}
 };
 
 /**
@@ -86,8 +92,12 @@ template<typename T> struct List{
 	}
 
 	void deleteAll(){
-		delete(inicio);
-		delete(fin);
+		Node<T> *aux;
+		while(inicio){
+			aux = inicio;
+			inicio = inicio->sig;
+			free(aux);
+		}
 	}
 
 };

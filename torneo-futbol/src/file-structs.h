@@ -118,14 +118,6 @@ struct FileManager{
 		return -1;
 	}
 
-	List<Equipo> getList(){
-		FileIterator<Equipo> it = getIterator();
-		List<Equipo> list;
-		while(it.hasNext()){
-			list.put(it.next());
-		}
-		return list;
-	}
 
 };
 
@@ -138,9 +130,9 @@ struct ListaPuntaje{
 	Node<Puntaje> *fin;
 
 	void put(Puntaje puntaje){
-		Node<Puntaje> *node = new Node<Puntaje>();
-		node->data = puntaje;
 		if(!inicio){
+			Node<Puntaje> *node = new Node<Puntaje>();
+			node->data = puntaje;
 			inicio = node;
 			fin = inicio;
 		}else{
@@ -154,6 +146,8 @@ struct ListaPuntaje{
 					return;
 				}
 			}
+			Node<Puntaje> *node = new Node<Puntaje>();
+			node->data = puntaje;
 			Node<Puntaje> *ant = fin;
 			fin->sig = node;
 			fin = node;
@@ -228,8 +222,12 @@ struct ListaPuntaje{
 		}
 
 	void deleteAll(){
-		delete(inicio);
-		delete(fin);
+		Node<Puntaje> *aux;
+		while(inicio){
+			aux = inicio;
+			inicio = inicio->sig;
+			free(aux);
+		}
 	}
 
 };
